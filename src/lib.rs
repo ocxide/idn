@@ -44,6 +44,12 @@ impl<const N: usize> Display for IdN<N> {
     }
 }
 
+impl<const N: usize> From<IdN<N>> for [u8; N] {
+    fn from(value: IdN<N>) -> Self {
+        value.0
+    }
+}
+
 mod string {
     use std::fmt;
 
@@ -223,11 +229,11 @@ mod sede {
 
             let mut remaining = 0;
             while seq.next_element::<u8>()?.is_some() {
-                remaining += 1; 
+                remaining += 1;
             }
-            
+
             if remaining > 0 {
-                return Err(A::Error::invalid_length(N + remaining, &self))
+                return Err(A::Error::invalid_length(N + remaining, &self));
             }
 
             match IdN::<N>::try_from(bytes) {
